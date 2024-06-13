@@ -1,5 +1,6 @@
+// StoreContextProvider.js
 import React, { createContext, useEffect, useState } from "react";
-import { food_list } from "../assets/assets";
+import { food_list } from "../assets/assets"; // Ensure this path is correct
 
 export const StoreContext = createContext(null);
 
@@ -10,12 +11,12 @@ const StoreContextProvider = (props) => {
     if (cartItems[itemId]) {
       setCartItems((prevCartItems) => ({
         ...prevCartItems,
-        [itemId]: prevCartItems[itemId] + 1
+        [itemId]: prevCartItems[itemId] + 1,
       }));
     } else {
       setCartItems((prevCartItems) => ({
         ...prevCartItems,
-        [itemId]: 1
+        [itemId]: 1,
       }));
     }
   };
@@ -28,14 +29,28 @@ const StoreContextProvider = (props) => {
     } else if (cartItems[itemId] > 1) {
       setCartItems((prevCartItems) => ({
         ...prevCartItems,
-        [itemId]: prevCartItems[itemId] - 1
+        [itemId]: prevCartItems[itemId] - 1,
       }));
     }
   };
 
-  useEffect(() => {
-    console.log(cartItems);
-  }, [cartItems]);
+  const getTotalCartAmount = () => {
+    let totalAmount = 0;
+    for (const item in cartItems) {
+      if (cartItems[item] > 0) {
+        const itemInfo = food_list.find((product) => product._id === item);
+  
+        if (!itemInfo) {
+          console.warn(`Item with ID ${item} not found in food_list`);
+          continue;
+        }
+  
+        totalAmount += itemInfo.price * cartItems[item];
+      }
+    }
+    return totalAmount;
+  };
+  
 
   const contextValue = {
     food_list,
@@ -43,6 +58,7 @@ const StoreContextProvider = (props) => {
     removeFromCart,
     cartItems,
     setCartItems,
+    getTotalCartAmount
   };
 
   return (
