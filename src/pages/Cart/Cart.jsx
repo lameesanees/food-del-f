@@ -3,7 +3,7 @@ import "./Cart.css";
 import { StoreContext } from "../../Context/StoreContext";
 import { useNavigate } from "react-router-dom";
 function Cart() {
-  const url ="https://food-del-b.onrender.com"
+  const url ="http://localhost:4000"
   const { cartItems, food_list, removeFromCart, getTotalCartAmount } = useContext(StoreContext);
 const navigate = useNavigate()
   return (
